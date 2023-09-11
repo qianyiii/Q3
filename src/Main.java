@@ -1,17 +1,43 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        File data = new File("data.txt");
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        int index = 0;
+        ArrayList<SalesData> salesData = new ArrayList<>();
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        if (data.exists()) {
+            System.out.println("File exists");
+            try (Scanner reader = new Scanner(data)){
+                while (reader.hasNext()){
+                    String line = reader.nextLine();
+                    if (index > 0) {
+                        String[] items = line.split(",");
+                        String name = items[1];
+                        double total = Double.parseDouble(items[2]);
+                        int quantity = Integer.parseInt(items[3]);
+
+                        SalesData datas = new SalesData(name, total, quantity);
+
+                        System.out.print(index + ". ");
+                        System.out.println(datas);
+                        System.out.println();
+                    }
+                    index++;
+                }
+
+            } catch (FileNotFoundException exception) {
+                System.out.println(exception.getMessage());
+            }
+
+        } else {
+            System.out.println("File does not exists");
         }
     }
 }
